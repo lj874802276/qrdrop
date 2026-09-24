@@ -1,0 +1,265 @@
+:root {
+  --bg: #ffffff;
+  --text: #1f2328;
+  --muted: #6b7280;
+  --faint: #9aa1ab;
+  --border: #dfe2e7;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --success: #22c55e;
+  --danger: #dc2626;
+  --track: #eef0f3;
+  --radius: 8px;
+  --radius-sm: 6px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* The drop zone and notice set display explicitly, which would otherwise win
+   over the user-agent rule for [hidden]. */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- header ---------- */
+
+.m-header {
+  padding: 18px 20px;
+  background: var(--accent);
+  color: #fff;
+  text-align: center;
+}
+
+.m-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- layout ---------- */
+
+.m-main {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.m-sub {
+  margin: 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- drop zone ---------- */
+
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 210px;
+  padding: 28px 20px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: #fcfcfd;
+  color: var(--accent);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.drop-zone:hover,
+.drop-zone:focus-visible {
+  border-color: var(--accent);
+}
+
+.drop-zone.is-over {
+  border-color: var(--accent);
+  background: #f2f7ff;
+}
+
+.drop-icon {
+  width: 56px;
+  height: 56px;
+}
+
+.drop-text {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text);
+}
+
+/* ---------- button ---------- */
+
+.m-btn {
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 14px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.m-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.m-btn:disabled {
+  background: #c3ccda;
+  cursor: not-allowed;
+}
+
+/* ---------- queue ---------- */
+
+.queue {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.q-row {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.q-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.q-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.q-action {
+  flex: none;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.q-action:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.q-track {
+  margin-top: 10px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.q-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: var(--success);
+  transition: width 0.18s ease;
+}
+
+.q-row.is-error .q-fill {
+  background: var(--danger);
+}
+
+.q-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  min-height: 20px;
+}
+
+.q-row.is-done .q-meta {
+  color: var(--success);
+}
+
+.q-row.is-error .q-meta {
+  color: var(--danger);
+}
+
+.q-hint {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.q-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--success);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ---------- footer + notice ---------- */
+
+.m-foot {
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.notice {
+  max-width: 520px;
+  margin: 0 auto 32px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+  background: #fafbfc;
+}
+
+@media (max-width: 380px) {
+  .m-main {
+    padding: 20px 16px 32px;
+  }
+}

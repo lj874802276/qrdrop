@@ -1,0 +1,614 @@
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --text: #1f2328;
+  --muted: #6b7280;
+  --faint: #9aa1ab;
+  --border: #e6e8ec;
+  --border-strong: #d5d9e0;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: #eaf2ff;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --radius: 8px;
+  --radius-sm: 6px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Several elements below set display explicitly, which would otherwise win
+   over the user-agent rule for [hidden]. */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.app-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--faint);
+}
+
+/* ---------- page shell ---------- */
+
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px 28px 48px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.btn-sm {
+  font-size: 13px;
+  padding: 7px 12px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.btn-danger {
+  background: #fff;
+  border-color: #f0c4c4;
+  color: var(--danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #fdf2f2;
+  border-color: #e7a8a8;
+}
+
+.btn-ghost {
+  border-color: var(--border-strong);
+  color: var(--muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  border-color: var(--faint);
+  color: var(--text);
+}
+
+.btn-link {
+  padding: 2px 4px;
+  color: var(--accent);
+  border-radius: 4px;
+}
+
+.btn-link:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.btn-link:disabled {
+  color: var(--faint);
+}
+
+/* ---------- status chip ---------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-strong);
+  flex: none;
+}
+
+.chip-open .chip-dot {
+  background: var(--success);
+}
+
+.chip-open {
+  color: var(--text);
+}
+
+.chip-closed .chip-dot,
+.chip-expired .chip-dot {
+  background: var(--faint);
+}
+
+/* ---------- layout ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 18px;
+  align-items: start;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+/* ---------- QR panel ---------- */
+
+.qr-panel {
+  text-align: center;
+}
+
+.qr-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 316px;
+  padding: 24px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: #fcfcfd;
+}
+
+.qr-image {
+  display: block;
+  width: 240px;
+  height: 240px;
+  image-rendering: pixelated;
+}
+
+.qr-placeholder {
+  margin: 0;
+  max-width: 220px;
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.qr-caption {
+  margin: 20px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.qr-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.qr-meta .mono {
+  color: var(--text);
+}
+
+.meta-sep {
+  color: var(--border-strong);
+}
+
+/* ---------- files panel ---------- */
+
+.files-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 316px;
+  padding-bottom: 0;
+}
+
+.card-title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid #f1f2f5;
+}
+
+.file-row:last-child {
+  border-bottom: none;
+}
+
+.file-row.is-new {
+  animation: rowIn 1.4s ease-out;
+}
+
+@keyframes rowIn {
+  from {
+    background: var(--accent-soft);
+  }
+  to {
+    background: transparent;
+  }
+}
+
+.file-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.file-name:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.file-size {
+  flex: none;
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.file-check {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: var(--success);
+  text-decoration: none;
+}
+
+.file-check:hover {
+  background: #eefaf1;
+}
+
+.file-check svg {
+  display: block;
+}
+
+.file-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: var(--faint);
+  font-size: 13px;
+}
+
+.save-hint {
+  display: flex;
+  gap: 6px;
+  margin: 0 -22px;
+  padding: 12px 22px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.save-dir {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- toast ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: rgba(31, 35, 40, 0.92);
+  color: #fff;
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 860px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page {
+    padding: 18px 16px 40px;
+  }
+
+  .topbar {
+    padding: 12px 16px;
+  }
+
+  .toolbar {
+    flex-wrap: wrap;
+  }
+}
+
+/* ---------- top bar actions ---------- */
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-btn {
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px 10px;
+}
+
+/* ---------- overlays (settings / history) ---------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 30;
+}
+
+.overlay-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgba(16, 24, 40, 0.18);
+  padding: 20px 22px;
+  max-height: 86vh;
+  overflow-y: auto;
+}
+
+.overlay-wide {
+  max-width: 640px;
+}
+
+.overlay-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.overlay-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pref-group {
+  border: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.text-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.resolved-line {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+  word-break: break-all;
+}
+
+.resolved-line .mono {
+  color: var(--text);
+}
+
+.path-status {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--danger);
+}
+
+.path-status.is-ok {
+  color: var(--success);
+}
+
+.overlay-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ---------- history ---------- */
+
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.history-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+.history-token {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.history-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.history-loc {
+  margin: 4px 0 8px;
+  font-size: 12px;
+  color: var(--faint);
+  word-break: break-all;
+}
+
+.history-files {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- file row: open folder button ---------- */
+
+.file-open {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.file-open:hover {
+  background: #eef2f7;
+  color: var(--accent);
+}
+
+.file-open svg {
+  display: block;
+}

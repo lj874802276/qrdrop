@@ -1,0 +1,37 @@
+# --- Build artifacts (regenerable via `go build -o qrdrop.exe .`) ---
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# --- Go ---
+/vendor/
+go.work
+go.work.sum
+
+# --- Runtime data dir (SQLite DB + received files) ---
+/data/
+data/
+
+# --- Local settings override (user-specific save_dir preference) ---
+settings.json
+
+# --- Test / smoke scratch (created by E:\tools\smoke2.sh) ---
+*.smoke-probe.txt
+s2.txt
+s2dl.txt
+probe.txt
+
+# --- Logs ---
+*.log
+
+# --- Agent workspace memory (not part of the project) ---
+.workbuddy/
+
+# --- Editor / OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

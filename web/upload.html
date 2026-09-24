@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>QRDrop · 上传</title>
+<link rel="stylesheet" href="/upload.css">
+</head>
+<body>
+
+<header class="m-header">
+  <h1 class="m-title" data-i18n="uploadTitle">培训资料上传</h1>
+</header>
+
+<main class="m-main">
+  <p class="m-sub" id="subtitle"></p>
+
+  <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="选择文件">
+    <svg class="drop-icon" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M15 35h18a8 8 0 0 0 .7-15.97A10.5 10.5 0 0 0 14.3 17.7 8.5 8.5 0 0 0 15 35Z"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M24 39V25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M19 30l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <p class="drop-text" data-i18n="dropHint">点击或拖拽选择文件</p>
+    <input id="fileInput" type="file" multiple hidden>
+  </div>
+
+  <button id="uploadBtn" class="m-btn" type="button" disabled data-i18n="upload">上传</button>
+
+  <ul id="queue" class="queue"></ul>
+
+  <p class="m-foot" id="footNote">无需登录 · 会话 30 分钟后自动关闭</p>
+</main>
+
+<div id="notice" class="notice" hidden></div>
+
+<script src="/i18n.js"></script>
+<script src="/upload.js"></script>
+</body>
+</html>

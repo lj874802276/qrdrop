@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>QRDrop · 收件箱</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1 class="app-title">QRDrop<span class="app-sub" data-i18n="brandSub">扫码传文件</span></h1>
+  <div class="topbar-actions">
+    <button id="historyBtn" class="btn btn-ghost btn-sm" type="button" data-i18n="history">历史记录</button>
+    <button id="settingsBtn" class="btn btn-ghost btn-sm" type="button" data-i18n="settings">设置</button>
+    <button id="langToggle" class="btn btn-ghost btn-sm" type="button">中 | En</button>
+  </div>
+</header>
+
+<main class="page">
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button id="newInbox" class="btn btn-primary" type="button" data-i18n="newInbox">新建收件箱</button>
+      <span id="statusChip" class="chip chip-idle">
+        <i class="chip-dot" aria-hidden="true"></i>
+        <span id="statusText">未开启</span>
+      </span>
+    </div>
+    <button id="closeInbox" class="btn btn-danger btn-sm" type="button" hidden data-i18n="closeInbox">关闭收件箱</button>
+  </div>
+
+  <div class="grid">
+    <section class="card qr-panel">
+      <div class="qr-frame">
+        <img id="qrImage" class="qr-image" width="240" height="240" alt="QR code" hidden>
+        <p id="qrPlaceholder" class="qr-placeholder" data-i18n="qrHint">点击「新建收件箱」生成二维码</p>
+      </div>
+      <p id="qrCaption" class="qr-caption" data-i18n="qrCaption" hidden>请讲师扫码上传</p>
+      <p id="qrMeta" class="qr-meta" hidden>
+        <span data-i18n="sessionTTL">会话有效期</span>
+        <span id="countdown" class="mono">--:--</span>
+        <span class="meta-sep" aria-hidden="true">·</span>
+        <button id="copyLink" class="btn btn-link" type="button" data-i18n="copyLink">复制链接</button>
+      </p>
+    </section>
+
+    <section class="card files-panel">
+      <h2 class="card-title" data-i18n="receivedFiles">已接收文件</h2>
+      <ul id="fileList" class="file-list"></ul>
+      <p id="fileEmpty" class="file-empty" data-i18n="noFiles">暂无文件</p>
+      <p class="save-hint">
+        <span data-i18n="saveTo">自动保存到</span>
+        <span id="saveDir" class="mono save-dir">—</span>
+      </p>
+    </section>
+  </div>
+</main>
+
+<div id="settingsOverlay" class="overlay" hidden>
+  <div class="overlay-card">
+    <div class="overlay-head">
+      <h2 class="overlay-title" data-i18n="settingsTitle">保存位置</h2>
+      <button id="settingsClose" class="btn btn-ghost btn-sm icon-btn" type="button" aria-label="close">×</button>
+    </div>
+    <fieldset class="pref-group">
+      <label class="radio"><input type="radio" name="savePref" value="desktop"><span data-i18n="saveDesktop">桌面</span></label>
+      <label class="radio"><input type="radio" name="savePref" value="default"><span data-i18n="saveDefault">默认目录</span></label>
+      <label class="radio"><input type="radio" name="savePref" value="custom"><span data-i18n="saveCustom">自定义</span></label>
+    </fieldset>
+    <input id="customPath" class="text-input" type="text" data-i18n-placeholder="saveCustomPlaceholder" placeholder="输入保存文件夹的完整路径" hidden>
+    <p class="resolved-line">
+      <span data-i18n="resolvedDir">实际保存位置</span>：<span id="resolvedDir" class="mono">—</span>
+    </p>
+    <p id="pathStatus" class="path-status" hidden></p>
+    <div class="overlay-foot">
+      <button id="saveSettingsBtn" class="btn btn-primary btn-sm" type="button" data-i18n="saveBtn">保存</button>
+    </div>
+  </div>
+</div>
+
+<div id="historyOverlay" class="overlay" hidden>
+  <div class="overlay-card overlay-wide">
+    <div class="overlay-head">
+      <h2 class="overlay-title" data-i18n="history">历史记录</h2>
+      <button id="historyClose" class="btn btn-ghost btn-sm icon-btn" type="button" aria-label="close">×</button>
+    </div>
+    <ul id="historyList" class="history-list"></ul>
+    <p id="historyEmpty" class="file-empty" data-i18n="historyEmpty">暂无历史记录</p>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="/i18n.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>
