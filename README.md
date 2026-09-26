@@ -15,6 +15,26 @@ JavaScript，数据库为内置 **SQLite**（纯 Go 驱动，无需 CGO）。它
 开启一个临时「收件箱」并显示二维码，手机（或同局域网内的任何设备）扫码后即可
 直接向本机上传文件。
 
+[![Latest Release](https://img.shields.io/github/v/release/lj874802276/qrdrop?label=Latest%20Release)](https://github.com/lj874802276/qrdrop/releases)
+
+## Download & Run (no build required)
+
+Prebuilt binaries for **Windows / macOS / Linux** (Intel & Apple Silicon) are attached to every [GitHub Release](https://github.com/lj874802276/qrdrop/releases). Download, unzip, and run — no Go toolchain, no Docker.
+
+- **Windows:** double-click `qrdrop.exe`. It prints the LAN address and opens your browser automatically.
+- **macOS / Linux:** run `./qrdrop` from a terminal.
+
+On first run a browser opens to the LAN address so phones can scan immediately. Set `QRDROP_NO_BROWSER=1` to disable the auto-open (useful on servers).
+
+## 下载即用（无需构建）
+
+每个 [GitHub Release](https://github.com/lj874802276/qrdrop/releases) 都附带 **Windows / macOS / Linux**（Intel 与 Apple Silicon）的预编译二进制。下载解压即可运行 —— 无需 Go 工具链，也无需 Docker。
+
+- **Windows：** 双击 `qrdrop.exe`，会自动打印局域网地址并打开浏览器。
+- **macOS / Linux：** 在终端执行 `./qrdrop`。
+
+首次运行会自动打开浏览器并定位到局域网地址，手机即可立即扫码。服务器/无头环境可设 `QRDROP_NO_BROWSER=1` 关闭自动打开。
+
 ---
 
 # English
@@ -47,9 +67,9 @@ go build -o qrdrop .
 CGO_ENABLED=0 go build -o qrdrop .
 ```
 
-> Note: `go.mod` currently uses the placeholder module path
-> `github.com/yourname/qrdrop`. Replace it with your real repository path before
-> publishing.
+> Note: the module path is `github.com/lj874802276/qrdrop` (this repository).
+> Release binaries are built automatically from `v*` tags via GoReleaser — see
+> `.goreleaser.yaml` and `.github/workflows/release.yml`.
 
 ## Run
 
@@ -80,6 +100,7 @@ All options are passed through environment variables.
 | `QRDROP_MAX_UPLOAD_MB` | `1024`       | Maximum size per upload, in megabytes.                                       |
 | `QRDROP_ALLOWED_EXTS`  | _(safelist)_ | Comma-separated allowed file extensions (extension safelist).              |
 | `QRDROP_SAVE_DIR`      | _(empty)_    | Hard override for the file save location; takes precedence over Settings.    |
+| `QRDROP_NO_BROWSER`    | _(empty)_    | Set to any value to disable auto-opening the browser on startup.             |
 
 Settings chosen in the UI (save location) are persisted to
 `<QRDROP_DATA_DIR>/settings.json` and can be overridden per-run by
@@ -107,9 +128,10 @@ The image is multi-stage and produces a static binary; the default listen port i
 
 ## Important notes
 
-- **LAN access:** open the host page using your LAN IP (e.g. `http://192.168.1.10:8080`),
-  **not** `127.0.0.1`. If you open it on localhost, the QR encodes `127.0.0.1` and the
-  phone will try to reach *itself*, not your PC.
+- **LAN access (automatic):** on startup QRDrop detects your LAN IP, opens the browser
+  there, and the QR code uses that address even if you later open the page on `localhost`.
+  Phones therefore scan a reachable address by default — no manual switch to your LAN IP
+  is required. (Set `QRDROP_NO_BROWSER=1` on headless servers.)
 - **Firewall:** allow inbound TCP on the listen port, or the phone's requests will be dropped.
 - **Save location is snapshot per inbox:** changing the global setting only affects
   *new* inboxes. Existing inboxes keep their original path so history stays traceable.
@@ -149,8 +171,9 @@ go build -o qrdrop .
 CGO_ENABLED=0 go build -o qrdrop .
 ```
 
-> 说明：`go.mod` 中目前的模块路径是占位符
-> `github.com/yourname/qrdrop`。发布前请替换为你真实的仓库路径。
+> 说明：模块路径即 `github.com/lj874802276/qrdrop`（即本仓库）。
+> 发布二进制由 `v*` 标签经 GoReleaser 自动构建，配置见
+> `.goreleaser.yaml` 与 `.github/workflows/release.yml`。
 
 ## 运行
 
@@ -180,6 +203,7 @@ QRDROP_ADDR=:9090 QRDROP_DATA_DIR=./data ./qrdrop
 | `QRDROP_MAX_UPLOAD_MB` | `1024`       | 单次上传的最大体积（单位：MB）。                                              |
 | `QRDROP_ALLOWED_EXTS`  | _（安全白名单）_ | 逗号分隔的允许上传的扩展名。                                               |
 | `QRDROP_SAVE_DIR`      | _（空）_     | 文件保存位置的硬覆盖值，优先级高于界面设置。                                  |
+| `QRDROP_NO_BROWSER`    | _（空）_     | 设为任意值可关闭启动时自动打开浏览器的行为。                                  |
 
 在界面中选择的设置（保存位置）会持久化到 `<QRDROP_DATA_DIR>/settings.json`，
 并可在每次运行时被 `QRDROP_SAVE_DIR` 覆盖。
@@ -206,9 +230,9 @@ docker run -d --name qrdrop \
 
 ## 注意事项
 
-- **局域网访问：** 主机页面请使用你的局域网 IP 打开（例如 `http://192.168.1.10:8080`），
-  **不要**用 `127.0.0.1`。若用本机回环地址打开，二维码会编码 `127.0.0.1`，手机将尝试连接
-  *它自己* 而非你的电脑。
+- **局域网访问（已自动）：** 启动时 QRDrop 会自动探测你的局域网 IP，并把浏览器打开到该地址；
+  即便你之后用 `localhost` 打开页面，二维码也会使用局域网地址。因此手机默认就能扫到可达地址，
+  无需手动切换到局域网 IP。（无头服务器可设 `QRDROP_NO_BROWSER=1` 关闭自动打开。）
 - **防火墙：** 放行监听端口的入站 TCP，否则手机请求会被丢弃。
 - **保存位置按收件箱快照：** 修改全局设置只影响**新**收件箱；旧收件箱保留原路径，历史始终可追溯。
 - **关闭收件箱不会删除已接收文件** —— 只有显式手动删除才会移除它们。

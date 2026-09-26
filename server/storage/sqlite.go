@@ -10,7 +10,7 @@ import (
 
 	_ "modernc.org/sqlite" // registers the "sqlite" database/sql driver
 
-	"github.com/yourname/qrdrop/server/model"
+	"github.com/lj874802276/qrdrop/server/model"
 )
 
 // ErrNotFound is returned when a session or file does not exist.

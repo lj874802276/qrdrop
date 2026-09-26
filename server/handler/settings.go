@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/yourname/qrdrop/server/config"
+	"github.com/lj874802276/qrdrop/server/config"
 )
 
 // GetSettings (GET /api/settings) returns the current save-location preference

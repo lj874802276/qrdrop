@@ -10,6 +10,9 @@
 go.work
 go.work.sum
 
+# --- GoReleaser build output ---
+/dist/
+
 # --- Runtime data dir (SQLite DB + received files) ---
 /data/
 data/

@@ -7,8 +7,8 @@ import (
 
 	qrcode "github.com/skip2/go-qrcode"
 
-	"github.com/yourname/qrdrop/server/service"
-	"github.com/yourname/qrdrop/server/storage"
+	"github.com/lj874802276/qrdrop/server/service"
+	"github.com/lj874802276/qrdrop/server/storage"
 )
 
 const (

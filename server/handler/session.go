@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/yourname/qrdrop/server/model"
-	"github.com/yourname/qrdrop/server/service"
-	"github.com/yourname/qrdrop/server/storage"
+	"github.com/lj874802276/qrdrop/server/model"
+	"github.com/lj874802276/qrdrop/server/service"
+	"github.com/lj874802276/qrdrop/server/storage"
 )
 
 // CreateSession (POST /api/session) opens a new inbox and persists it.

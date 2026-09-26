@@ -1,0 +1,56 @@
+version: 2
+
+project_name: qrdrop
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: qrdrop
+    main: .
+    binary: qrdrop
+    env:
+      - CGO_ENABLED=0
+      - GOTOOLCHAIN=local
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}}
+
+archives:
+  - id: qrdrop
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - README.md
+      - LICENSE
+      - PROJECT.md
+
+checksum:
+  name_template: "checksums.txt"
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+      - "^ci:"
+
+release:
+  github:
+    owner: lj874802276
+    name: qrdrop
+  draft: false
+  prerelease: auto

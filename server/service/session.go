@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/yourname/qrdrop/server/model"
+	"github.com/lj874802276/qrdrop/server/model"
 )
 
 // tokenPattern is the only shape a session token may take. Token values are

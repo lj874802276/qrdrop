@@ -4,8 +4,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/yourname/qrdrop/server/config"
-	"github.com/yourname/qrdrop/server/storage"
+	"github.com/lj874802276/qrdrop/server/config"
+	"github.com/lj874802276/qrdrop/server/storage"
 )
 
 // cleanupInterval is how often expired inboxes are swept.

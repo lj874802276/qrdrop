@@ -1,4 +1,4 @@
-module github.com/yourname/qrdrop
+module github.com/lj874802276/qrdrop
 
 go 1.22
 

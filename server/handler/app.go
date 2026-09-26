@@ -8,10 +8,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/yourname/qrdrop/server/config"
-	"github.com/yourname/qrdrop/server/model"
-	"github.com/yourname/qrdrop/server/service"
-	"github.com/yourname/qrdrop/server/storage"
+	"github.com/lj874802276/qrdrop/server/config"
+	"github.com/lj874802276/qrdrop/server/model"
+	"github.com/lj874802276/qrdrop/server/service"
+	"github.com/lj874802276/qrdrop/server/storage"
 )
 
 // App wires configuration, storage and the realtime hub into HTTP handlers.
@@ -20,6 +20,11 @@ type App struct {
 	Store *storage.Store
 	Hub   *service.Hub
 	Web   fs.FS
+
+	// LanBaseURL, when set, is the externally reachable origin (e.g.
+	// http://192.168.2.101:8080) used for the QR code when the incoming
+	// request arrives on a loopback host, so phones can actually scan it.
+	LanBaseURL string
 }
 
 // New builds the application.
@@ -106,7 +111,24 @@ func (a *App) baseURL(r *http.Request) string {
 		host = firstValue(forwarded)
 	}
 
+	// Prefer the LAN origin for the QR code when the host opened the page on
+	// loopback (localhost / 127.x), otherwise the phone scans an address that
+	// only resolves on the host machine.
+	if a.LanBaseURL != "" && isLoopbackHost(host) {
+		return a.LanBaseURL
+	}
+
 	return scheme + "://" + host
+}
+
+// isLoopbackHost reports whether host (with or without a port) points at this
+// machine only, so the QR code should be upgraded to the LAN address.
+func isLoopbackHost(host string) bool {
+	if i := strings.LastIndexByte(host, ':'); i >= 0 {
+		host = host[:i]
+	}
+	host = strings.ToLower(strings.TrimSpace(host))
+	return host == "localhost" || host == "127.0.0.1" || host == "::1" || host == "[::1]"
 }
 
 func firstValue(header string) string {

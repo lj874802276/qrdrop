@@ -8,8 +8,8 @@ import (
 	"runtime"
 	"strconv"
 
-	"github.com/yourname/qrdrop/server/service"
-	"github.com/yourname/qrdrop/server/storage"
+	"github.com/lj874802276/qrdrop/server/service"
+	"github.com/lj874802276/qrdrop/server/storage"
 )
 
 // OpenFolder (POST /api/open-folder?session=&id=) reveals the received file in

@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/yourname/qrdrop/server/service"
-	"github.com/yourname/qrdrop/server/storage"
+	"github.com/lj874802276/qrdrop/server/service"
+	"github.com/lj874802276/qrdrop/server/storage"
 )
 
 // contentTypeByExt pins the MIME types of whitelisted extensions so inline

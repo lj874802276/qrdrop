@@ -81,7 +81,7 @@
 
 ### Deployment
 - **Meeting Room PC**: Double-click `qrdrop.exe` or run `./qrdrop server`.
-- **Server**: `docker run -p 8080:8080 -v ./data:/app/data ghcr.io/yourname/qrdrop:latest`.
+- **Server**: `docker run -p 8080:8080 -v ./data:/app/data ghcr.io/lj874802276/qrdrop:latest`.
 - **Official SaaS**: Maintained by author, free initially.
 
 ---
