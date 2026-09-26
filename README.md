@@ -17,6 +17,8 @@ JavaScript，数据库为内置 **SQLite**（纯 Go 驱动，无需 CGO）。它
 
 [![Latest Release](https://img.shields.io/github/v/release/lj874802276/qrdrop?label=Latest%20Release)](https://github.com/lj874802276/qrdrop/releases)
 
+![QRDrop architecture](assets/architecture.svg)
+
 ## Download & Run (no build required)
 
 Prebuilt binaries for **Windows / macOS / Linux** (Intel & Apple Silicon) are attached to every [GitHub Release](https://github.com/lj874802276/qrdrop/releases). Download, unzip, and run — no Go toolchain, no Docker.
@@ -38,6 +40,12 @@ On first run a browser opens to the LAN address so phones can scan immediately. 
 ---
 
 # English
+
+## Screenshots
+
+| Home | Inbox (QR) | Upload page (phone) |
+|---|---|---|
+| <img src="assets/ui_home.png" width="320"> | <img src="assets/ui_inbox.png" width="320"> | <img src="assets/ui_upload.png" width="220"> |
 
 ## Features
 
@@ -121,10 +129,16 @@ The image is multi-stage and produces a static binary; the default listen port i
 
 ## How it works
 
+![QRDrop data model](assets/model.svg)
+
 1. Open the host page in a browser — a session (inbox) is created and a QR code is shown.
 2. Scan the QR with a phone — it opens the upload page (the URL carries the session token).
 3. Pick files and upload — they are stored under `<save_dir>/<token>/`; the host list updates live via WebSocket.
 4. Use **Open folder** to reveal the files in your file manager, or **History** to review past inboxes.
+
+## Demo
+
+![QRDrop demo](assets/demo.gif)
 
 ## Important notes
 
@@ -145,6 +159,12 @@ Released under the [MIT License](./LICENSE).
 ---
 
 # 简体中文
+
+## 界面预览
+
+| 主页 | 收件箱（二维码） | 手机上传页 |
+|---|---|---|
+| <img src="assets/ui_home.png" width="320"> | <img src="assets/ui_inbox.png" width="320"> | <img src="assets/ui_upload.png" width="220"> |
 
 ## 功能特性
 
@@ -223,10 +243,16 @@ docker run -d --name qrdrop \
 
 ## 工作原理
 
+![QRDrop 数据模型](assets/model.svg)
+
 1. 浏览器打开主机页面 —— 系统创建一个会话（收件箱）并展示二维码。
 2. 手机扫码 —— 打开上传页（URL 中携带会话令牌 token）。
 3. 选择文件并上传 —— 文件存入 `<save_dir>/<token>/` 目录，主机列表经 WebSocket 实时刷新。
 4. 点击 **打开文件夹** 在文件管理器中定位文件，或点击 **历史** 查看过往收件箱。
+
+## 动态演示
+
+![QRDrop 演示](assets/demo.gif)
 
 ## 注意事项
 

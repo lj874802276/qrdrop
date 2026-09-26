@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 330" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="rel" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <text x="20" y="26" font-size="17" font-weight="700" fill="#0f172a">数据模型 · Data Model</text>
+
+  <!-- entity box helper style -->
+  <g font-size="12">
+    <!-- Inbox (center top) -->
+    <rect x="290" y="50" width="200" height="120" rx="10" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="290" y="50" width="200" height="26" rx="10" fill="#2563eb"/>
+    <rect x="290" y="63" width="200" height="13" fill="#2563eb"/>
+    <text x="390" y="68" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Inbox · 收件箱(会话)</text>
+    <text x="304" y="96" fill="#334155">token        二维码凭证</text>
+    <text x="304" y="114" fill="#334155">expiresAt    会话有效期</text>
+    <text x="304" y="132" fill="#334155">saveDir      保存目录</text>
+    <text x="304" y="150" fill="#334155">allowedExts  允许类型</text>
+
+    <!-- File (left bottom) -->
+    <rect x="40" y="210" width="200" height="100" rx="10" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+    <rect x="40" y="210" width="200" height="26" rx="10" fill="#1e3a8a"/>
+    <rect x="40" y="223" width="200" height="13" fill="#1e3a8a"/>
+    <text x="140" y="228" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">File · 文件</text>
+    <text x="54" y="256" fill="#334155">name     文件名</text>
+    <text x="54" y="274" fill="#334155">size     大小</text>
+    <text x="54" y="292" fill="#334155">status   接收状态</text>
+
+    <!-- Phone (right bottom) -->
+    <rect x="540" y="220" width="200" height="90" rx="10" fill="#fff" stroke="#475569" stroke-width="1.5"/>
+    <rect x="540" y="220" width="200" height="26" rx="10" fill="#475569"/>
+    <rect x="540" y="233" width="200" height="13" fill="#475569"/>
+    <text x="640" y="238" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">Phone · 手机</text>
+    <text x="554" y="270" fill="#334155">扫码打开上传页</text>
+    <text x="554" y="288" fill="#334155">选文件并上传</text>
+
+    <!-- PC (right top) -->
+    <rect x="540" y="50" width="200" height="84" rx="10" fill="#fff" stroke="#475569" stroke-width="1.5"/>
+    <rect x="540" y="50" width="200" height="26" rx="10" fill="#475569"/>
+    <rect x="540" y="63" width="200" height="13" fill="#475569"/>
+    <text x="640" y="68" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">PC · 电脑</text>
+    <text x="554" y="100" fill="#334155">生成二维码 / 展示</text>
+    <text x="554" y="118" fill="#334155">实时接收落盘</text>
+  </g>
+
+  <!-- relations -->
+  <path d="M290 170 C200 190 150 190 140 210" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#rel)"/>
+  <text x="180" y="200" font-size="11" fill="#64748b">1 ── N 文件</text>
+
+  <path d="M490 195 C540 205 540 215 540 220" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#rel)"/>
+  <text x="500" y="212" font-size="11" fill="#64748b">上传</text>
+
+  <path d="M490 95 C540 95 540 95 540 95" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#rel)"/>
+  <path d="M490 80 C545 78 545 90 540 92" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#rel)"/>
+  <text x="500" y="70" font-size="11" fill="#64748b">管理 / 展示</text>
+
+  <path d="M390 170 C420 200 460 205 500 208" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#rel)" opacity="0.0"/>
+  <path d="M390 168 C440 185 490 195 538 214" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#rel)"/>
+  <text x="430" y="180" font-size="11" fill="#64748b">1 ── N 收件箱</text>
+</svg>

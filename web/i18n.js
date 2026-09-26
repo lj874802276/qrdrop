@@ -34,8 +34,8 @@
       createFailed: '创建收件箱失败，请重试',
       connLost: '连接已断开，正在重连',
 
-      uploadTitle: '培训资料上传',
-      uploadSubtitle: '请选择 {types} 文件，单个最大 {size}',
+      uploadTitle: '文件上传',
+      uploadSubtitle: '请选择 {types} 文件上传',
       dropHint: '点击或拖拽选择文件',
       upload: '上传',
       uploading: '上传中',
@@ -111,7 +111,7 @@
       connLost: 'Connection lost, reconnecting',
 
       uploadTitle: 'Upload files',
-      uploadSubtitle: 'Choose {types} files, up to {size} each',
+      uploadSubtitle: 'Choose {types} files to upload',
       dropHint: 'Tap or drop to choose files',
       upload: 'Upload',
       uploading: 'Uploading',

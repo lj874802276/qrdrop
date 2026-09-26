@@ -450,8 +450,7 @@
     }
     if (state.status === 'ready') {
       el.subtitle.textContent = I18N.t('uploadSubtitle', {
-        types: typeList(state.allowed),
-        size: humanLimit(state.maxMB)
+        types: typeList(state.allowed)
       });
     }
     renderFoot();
