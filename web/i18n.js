@@ -31,6 +31,8 @@
       download: '下载文件',
       openFile: '打开文件',
       confirmClose: '确定关闭收件箱吗？已接收的文件会保留在本地。',
+      cancelBtn: '取消',
+      confirmYes: '确定关闭',
       createFailed: '创建收件箱失败，请重试',
       connLost: '连接已断开，正在重连',
 
@@ -76,6 +78,7 @@
       histLocation: '保存位置',
       fileRetained: '已接收的文件已保留在本地',
       saveBtn: '保存',
+      openSource: '开源地址',
       themeDark: '深色',
       themeLight: '浅色'
     },
@@ -107,6 +110,8 @@
       download: 'Download file',
       openFile: 'Open file',
       confirmClose: 'Close this inbox? Received files stay on disk.',
+      cancelBtn: 'Cancel',
+      confirmYes: 'Close inbox',
       createFailed: 'Could not create the inbox, please retry',
       connLost: 'Connection lost, reconnecting',
 
@@ -152,6 +157,7 @@
       histLocation: 'Location',
       fileRetained: 'Received files are kept on disk',
       saveBtn: 'Save',
+      openSource: 'Open source',
       themeDark: 'Dark',
       themeLight: 'Light'
     }
