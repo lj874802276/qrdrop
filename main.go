@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"embed"
+	"encoding/json"
 	"errors"
 	"io/fs"
 	"log"
@@ -120,6 +121,11 @@ func httpRoutes(app *handler.App, webFS fs.FS) http.Handler {
 		app.GetSettings(w, r)
 	})
 	mux.HandleFunc("/api/open-folder", app.OpenFolder)
+	mux.HandleFunc("/api/version", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		payload, _ := json.Marshal(map[string]string{"version": version})
+		w.Write(payload)
+	})
 	mux.HandleFunc("/ws", app.WebSocket)
 
 	// Clean URL for the page the QR code points at.

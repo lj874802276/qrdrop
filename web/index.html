@@ -33,19 +33,19 @@
 
   <div class="grid">
     <section class="card qr-panel">
-      <h3 id="qrTitle" class="qr-title" data-i18n="qrTitle" hidden>扫码上传文件</h3>
+      <h3 id="qrTitle" class="qr-title" data-i18n="qrTitle">扫码上传文件</h3>
       <div class="qr-frame">
         <img id="qrImage" class="qr-image" width="240" height="240" alt="QR code" hidden>
         <p id="qrPlaceholder" class="qr-placeholder" data-i18n="qrHint">点击「新建收件箱」生成二维码</p>
       </div>
-      <p id="netHint" class="net-hint" hidden>
+      <p id="netHint" class="net-hint">
         <svg class="net-hint-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <circle cx="12" cy="18.5" r="1.2" fill="currentColor"/>
         </svg>
         <span data-i18n="netHint">手机需连同一 WiFi，不能只用流量</span>
       </p>
-      <div id="qrMeta" class="qr-meta" hidden>
+      <div id="qrMeta" class="qr-meta">
         <span class="meta-ttl">
           <span data-i18n="sessionTTL">会话有效期</span>
           <span id="countdown" class="mono">--:--</span>
@@ -53,7 +53,7 @@
         <span class="meta-actions">
           <button id="copyLink" class="btn btn-link" type="button" data-i18n="copyLink">复制链接</button>
           <span class="meta-dot" aria-hidden="true">·</span>
-          <button id="troubleToggle" class="trouble-toggle" type="button" hidden data-i18n="troubleTitle">手机扫不开？</button>
+          <button id="troubleToggle" class="trouble-toggle" type="button" data-i18n="troubleTitle">手机扫不开？</button>
         </span>
       </div>
       <ul id="troublePanel" class="trouble-panel" hidden>
@@ -91,6 +91,25 @@
   </div>
 </main>
 
+<footer class="site-footer">
+  <span id="appVersion" class="app-version mono"></span>
+  <span data-i18n="openSource">开源地址</span>
+  <a class="repo-link" href="https://github.com/lj874802276/qrdrop" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.9 1.2 1.9 1.2 3.2 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/>
+    </svg>
+    <span>GitHub</span>
+  </a>
+  <span class="footer-dot" aria-hidden="true">·</span>
+  <a class="repo-link" href="https://gitee.com/Destiny_cc/qrdrop" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="11.5" fill="#c71d23"/>
+      <text x="12" y="16.8" text-anchor="middle" font-size="14" font-weight="700" font-family="Arial, Helvetica, sans-serif" fill="#fff">G</text>
+    </svg>
+    <span>Gitee</span>
+  </a>
+</footer>
+
 <div id="settingsOverlay" class="overlay" hidden>
   <div class="overlay-card">
     <div class="overlay-head">
@@ -121,6 +140,16 @@
     </div>
     <ul id="historyList" class="history-list"></ul>
     <p id="historyEmpty" class="file-empty" data-i18n="historyEmpty">暂无历史记录</p>
+  </div>
+</div>
+
+<div id="confirmOverlay" class="overlay" hidden>
+  <div class="overlay-card overlay-confirm">
+    <p class="confirm-text" data-i18n="confirmClose">确定关闭收件箱吗？已接收的文件会保留在本地。</p>
+    <div class="overlay-foot">
+      <button id="confirmCancel" class="btn btn-ghost btn-sm" type="button" data-i18n="cancelBtn">取消</button>
+      <button id="confirmOk" class="btn btn-danger btn-sm" type="button" data-i18n="confirmYes">确定关闭</button>
+    </div>
   </div>
 </div>
 

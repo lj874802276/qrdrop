@@ -54,6 +54,8 @@
 body {
   margin: 0;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background:
     radial-gradient(1200px 480px at 50% -10%, var(--accent-soft), transparent 70%),
     var(--bg);
@@ -289,7 +291,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 300px;
+  min-height: 304px;
   padding: 22px;
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -340,6 +342,21 @@ body {
   font-size: 13px;
   line-height: 1.5;
   color: var(--muted);
+}
+
+/* one-layout model: the hint row and the session footer are always part of
+   the layout; before an inbox is opened they just render invisible in place */
+.net-hint,
+.qr-meta {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.qr-panel.is-live .net-hint,
+.qr-panel.is-live .qr-meta {
+  visibility: visible;
+  opacity: 1;
 }
 
 .net-hint-icon {
@@ -693,6 +710,49 @@ body {
   }
 }
 
+/* ---------- site footer (open-source links) ---------- */
+
+.site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto; /* sticky footer: pin to the viewport bottom on short pages */
+  padding: 20px 16px 30px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.repo-link svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+
+.repo-link:hover {
+  color: var(--accent);
+}
+
+.footer-dot {
+  color: var(--faint);
+}
+
+.app-version {
+  font-size: 12px;
+  color: var(--muted);
+  margin-right: 2px;
+}
+
 /* ---------- responsive ---------- */
 
 @media (max-width: 860px) {
@@ -829,6 +889,20 @@ body {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+}
+
+/* ---------- confirm dialog ---------- */
+
+.overlay-confirm {
+  max-width: 340px;
+}
+
+.confirm-text {
+  margin: 2px 0 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  text-align: left;
 }
 
 /* ---------- history ---------- */

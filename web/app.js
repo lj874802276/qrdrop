@@ -141,6 +141,7 @@
     el.qrImage = $('qrImage');
     el.qrPlaceholder = $('qrPlaceholder');
     el.qrTitle = $('qrTitle');
+    el.qrPanel = document.querySelector('.qr-panel');
     el.qrMeta = $('qrMeta');
     el.netHint = $('netHint');
     el.countdown = $('countdown');
@@ -153,6 +154,7 @@
     el.themeToggle = $('themeToggle');
     el.troubleToggle = $('troubleToggle');
     el.troublePanel = $('troublePanel');
+    el.appVersion = $('appVersion');
     el.toast = $('toast');
 
     // settings + history overlays
@@ -171,6 +173,21 @@
 
     el.newInbox.addEventListener('click', createInbox);
     el.closeInbox.addEventListener('click', closeInbox);
+    el.confirmOk = $('confirmOk');
+    el.confirmCancel = $('confirmCancel');
+    el.confirmOverlay = $('confirmOverlay');
+    el.confirmOk.addEventListener('click', function () {
+      el.confirmOverlay.hidden = true;
+      doCloseInbox();
+    });
+    el.confirmCancel.addEventListener('click', function () {
+      el.confirmOverlay.hidden = true;
+    });
+    el.confirmOverlay.addEventListener('click', function (event) {
+      if (event.target === el.confirmOverlay) {
+        el.confirmOverlay.hidden = true;
+      }
+    });
     el.copyLink.addEventListener('click', copyLink);
     el.openSaveDir.addEventListener('click', function () { openFolder('dir'); });
     el.themeToggle.addEventListener('click', toggleTheme);
@@ -188,6 +205,19 @@
 
     loadTheme();
     restoreSession();
+    loadVersion();
+  }
+
+  // Footer version badge mirrors the running binary (injected at build time).
+  function loadVersion() {
+    fetch('/api/version')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        var v = data && data.version;
+        if (!v) { return; }
+        el.appVersion.textContent = v === 'dev' ? 'dev' : 'v' + v;
+      })
+      .catch(function () { /* cosmetic only */ });
   }
 
   function restoreSession() {
@@ -233,10 +263,7 @@
     el.qrImage.src = data.qr_url;
     el.qrImage.hidden = false;
     el.qrPlaceholder.hidden = true;
-    el.qrTitle.hidden = false;
-    el.qrMeta.hidden = false;
-    el.netHint.hidden = false;
-    el.troubleToggle.hidden = false;
+    el.qrPanel.classList.add('is-live');
     el.closeInbox.hidden = false;
     el.openSaveDir.hidden = false;
     el.copyLink.disabled = false;
@@ -255,7 +282,12 @@
     if (!state.token || state.closing) {
       return;
     }
-    if (!window.confirm(I18N.t('confirmClose'))) {
+    el.confirmOverlay.hidden = false;
+  }
+
+  function doCloseInbox() {
+    if (!state.token || state.closing) {
+      el.confirmOverlay.hidden = true;
       return;
     }
 
@@ -573,8 +605,7 @@
     localStorage.removeItem(SESSION_KEY);
     el.copyLink.disabled = true;
     el.openSaveDir.hidden = true;
-    el.netHint.hidden = true;
-    el.troubleToggle.hidden = true;
+    el.qrPanel.classList.remove('is-live');
     el.troublePanel.hidden = true;
     el.troubleToggle.classList.remove('is-open');
     renderStatus();
