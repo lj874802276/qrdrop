@@ -104,6 +104,12 @@
           markInvalid(I18N.t('sessionInvalid'));
           return;
         }
+        if (err && err.status === undefined) {
+          // Reached the server but the network call itself failed — usually the
+          // phone is on a different WiFi / cellular, so the LAN IP is unreachable.
+          markInvalid(I18N.t('uploadNetError'));
+          return;
+        }
         markInvalid(I18N.t('loadFailed'));
       });
   }

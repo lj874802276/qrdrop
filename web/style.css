@@ -330,26 +330,100 @@ body {
   font-size: 13px;
 }
 
-.qr-subtitle {
-  margin: 18px 0 0;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text);
-}
-
-.qr-meta {
+.net-hint {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin: 10px 0 0;
+  gap: 7px;
+  margin: 16px auto 0;
+  max-width: 360px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.net-hint-icon {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--accent);
+}
+
+/* Session/quick actions row: expiry on the left, actions on the right. */
+.qr-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
   font-size: 13px;
   color: var(--muted);
+}
+
+.meta-ttl {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .qr-meta .mono {
   color: var(--text);
   font-weight: 600;
+}
+
+.meta-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.meta-dot {
+  padding: 0 2px;
+  color: var(--faint);
+}
+
+.trouble-toggle {
+  display: inline-block;
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  border-radius: 999px;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.trouble-toggle::after {
+  content: " ▾";
+  font-size: 10px;
+}
+
+.trouble-toggle.is-open::after {
+  content: " ▴";
+}
+
+.trouble-toggle:hover {
+  background: var(--accent-soft);
+}
+
+.trouble-panel {
+  margin: 12px 0 0;
+  padding: 12px 14px 12px 30px;
+  text-align: left;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.trouble-panel li + li {
+  margin-top: 5px;
 }
 
 .mono.urgent {
@@ -574,11 +648,20 @@ body {
 
 .save-hint-label {
   display: inline-flex;
+  align-items: baseline;
+  flex: 1 1 auto;
   gap: 6px;
   min-width: 0;
 }
 
+.save-label {
+  flex: none;
+  white-space: nowrap;
+}
+
 .save-dir {
+  flex: 1 1 auto;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -38,13 +38,30 @@
         <img id="qrImage" class="qr-image" width="240" height="240" alt="QR code" hidden>
         <p id="qrPlaceholder" class="qr-placeholder" data-i18n="qrHint">点击「新建收件箱」生成二维码</p>
       </div>
-      <p id="qrCaption" class="qr-subtitle" data-i18n="qrCaption" hidden>请用手机扫一扫上传文件</p>
-      <p id="qrMeta" class="qr-meta" hidden>
-        <span data-i18n="sessionTTL">会话有效期</span>
-        <span id="countdown" class="mono">--:--</span>
-        <span class="meta-sep" aria-hidden="true">·</span>
-        <button id="copyLink" class="btn btn-link" type="button" data-i18n="copyLink">复制链接</button>
+      <p id="netHint" class="net-hint" hidden>
+        <svg class="net-hint-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="12" cy="18.5" r="1.2" fill="currentColor"/>
+        </svg>
+        <span data-i18n="netHint">手机需连同一 WiFi，不能只用流量</span>
       </p>
+      <div id="qrMeta" class="qr-meta" hidden>
+        <span class="meta-ttl">
+          <span data-i18n="sessionTTL">会话有效期</span>
+          <span id="countdown" class="mono">--:--</span>
+        </span>
+        <span class="meta-actions">
+          <button id="copyLink" class="btn btn-link" type="button" data-i18n="copyLink">复制链接</button>
+          <span class="meta-dot" aria-hidden="true">·</span>
+          <button id="troubleToggle" class="trouble-toggle" type="button" hidden data-i18n="troubleTitle">手机扫不开？</button>
+        </span>
+      </div>
+      <ul id="troublePanel" class="trouble-panel" hidden>
+        <li data-i18n="troubleStep1">确认手机连的是与电脑相同的 WiFi，不要用移动流量</li>
+        <li data-i18n="troubleStep2">关闭手机上的 VPN / 代理软件</li>
+        <li data-i18n="troubleStep3">企业 / 公共 WiFi 常隔离设备，可让手机开热点、电脑连热点后再扫</li>
+        <li data-i18n="troubleStep4">换用系统相机或微信「扫一扫」（浏览器内置扫码有时不跳转）</li>
+      </ul>
     </section>
 
     <section class="card files-panel">
@@ -61,7 +78,7 @@
       </p>
       <div class="save-hint">
         <span class="save-hint-label">
-          <span data-i18n="saveTo">自动保存到</span>
+          <span class="save-label" data-i18n="saveTo">自动保存到</span>
           <span id="saveDir" class="mono save-dir">—</span>
         </span>
         <button id="openSaveDir" class="btn btn-ghost btn-sm icon-btn" type="button" data-i18n-title="openSaveDir" title="打开保存位置" hidden>

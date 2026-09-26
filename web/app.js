@@ -71,6 +71,12 @@
     applyTheme(next);
   }
 
+  function toggleTrouble() {
+    var willOpen = el.troublePanel.hidden;
+    el.troublePanel.hidden = !willOpen;
+    el.troubleToggle.classList.toggle('is-open', willOpen);
+  }
+
   function rerenderOnLang() {
     renderStatus();
     if (state.order.length) {
@@ -135,8 +141,8 @@
     el.qrImage = $('qrImage');
     el.qrPlaceholder = $('qrPlaceholder');
     el.qrTitle = $('qrTitle');
-    el.qrCaption = $('qrCaption');
     el.qrMeta = $('qrMeta');
+    el.netHint = $('netHint');
     el.countdown = $('countdown');
     el.copyLink = $('copyLink');
     el.saveDir = $('saveDir');
@@ -145,6 +151,8 @@
     el.fileCount = $('fileCount');
     el.openSaveDir = $('openSaveDir');
     el.themeToggle = $('themeToggle');
+    el.troubleToggle = $('troubleToggle');
+    el.troublePanel = $('troublePanel');
     el.toast = $('toast');
 
     // settings + history overlays
@@ -166,6 +174,7 @@
     el.copyLink.addEventListener('click', copyLink);
     el.openSaveDir.addEventListener('click', function () { openFolder('dir'); });
     el.themeToggle.addEventListener('click', toggleTheme);
+    el.troubleToggle.addEventListener('click', toggleTrouble);
     el.settingsBtn.addEventListener('click', openSettings);
     el.settingsClose.addEventListener('click', closeSettings);
     el.historyBtn.addEventListener('click', openHistory);
@@ -225,8 +234,9 @@
     el.qrImage.hidden = false;
     el.qrPlaceholder.hidden = true;
     el.qrTitle.hidden = false;
-    el.qrCaption.hidden = false;
     el.qrMeta.hidden = false;
+    el.netHint.hidden = false;
+    el.troubleToggle.hidden = false;
     el.closeInbox.hidden = false;
     el.openSaveDir.hidden = false;
     el.copyLink.disabled = false;
@@ -563,6 +573,10 @@
     localStorage.removeItem(SESSION_KEY);
     el.copyLink.disabled = true;
     el.openSaveDir.hidden = true;
+    el.netHint.hidden = true;
+    el.troubleToggle.hidden = true;
+    el.troublePanel.hidden = true;
+    el.troubleToggle.classList.remove('is-open');
     renderStatus();
   }
 
