@@ -18,6 +18,69 @@
     '<path d="M1.5 4.5a1 1 0 0 1 1-1h3L6.7 4.9h5.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1H2.5a1 1 0 0 1-1-1V4.5z" ' +
     'stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
 
+  var BADGE = {
+    img: ['IMG', 'badge-img'],
+    pdf: ['PDF', 'badge-pdf'],
+    doc: ['DOC', 'badge-doc'],
+    xls: ['XLS', 'badge-xls'],
+    zip: ['ZIP', 'badge-zip'],
+    av: ['AV', 'badge-av'],
+    file: ['FILE', 'badge-file']
+  };
+
+  function fileBadge(name) {
+    var ext = (String(name).split('.').pop() || '').toLowerCase();
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'svg'].indexOf(ext) >= 0) return BADGE.img;
+    if (ext === 'pdf') return BADGE.pdf;
+    if (['doc', 'docx', 'txt', 'md', 'rtf'].indexOf(ext) >= 0) return BADGE.doc;
+    if (['xls', 'xlsx', 'csv'].indexOf(ext) >= 0) return BADGE.xls;
+    if (['zip', 'rar', '7z', 'tar', 'gz'].indexOf(ext) >= 0) return BADGE.zip;
+    if (['mp4', 'mov', 'avi', 'mkv', 'webm'].indexOf(ext) >= 0) return BADGE.av;
+    return BADGE.file;
+  }
+
+  function updateFileCount() {
+    if (el.fileCount) {
+      el.fileCount.textContent = String(state.order.length);
+    }
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    if (el.themeToggle) {
+      el.themeToggle.textContent = (theme === 'dark') ? I18N.t('themeLight') : I18N.t('themeDark');
+    }
+  }
+
+  function loadTheme() {
+    var t = localStorage.getItem('qrdrop.theme');
+    if (!t) {
+      t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
+    applyTheme(t);
+  }
+
+  function toggleTheme() {
+    var cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    var next = cur === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('qrdrop.theme', next);
+    applyTheme(next);
+  }
+
+  function rerenderOnLang() {
+    renderStatus();
+    if (state.order.length) {
+      renderFiles();
+    }
+    if (el.historyOverlay && !el.historyOverlay.hidden && state.historySessions.length) {
+      renderHistory(state.historySessions);
+    }
+  }
+
   var el = {};
   var toastTimer = null;
 
@@ -33,7 +96,8 @@
     reconnectTimer: null,
     pollTimer: null,
     tickTimer: null,
-    closing: false
+    closing: false,
+    historySessions: []
   };
 
   function $(id) {
@@ -70,6 +134,7 @@
     el.statusText = $('statusText');
     el.qrImage = $('qrImage');
     el.qrPlaceholder = $('qrPlaceholder');
+    el.qrTitle = $('qrTitle');
     el.qrCaption = $('qrCaption');
     el.qrMeta = $('qrMeta');
     el.countdown = $('countdown');
@@ -77,6 +142,9 @@
     el.saveDir = $('saveDir');
     el.fileList = $('fileList');
     el.fileEmpty = $('fileEmpty');
+    el.fileCount = $('fileCount');
+    el.openSaveDir = $('openSaveDir');
+    el.themeToggle = $('themeToggle');
     el.toast = $('toast');
 
     // settings + history overlays
@@ -96,6 +164,8 @@
     el.newInbox.addEventListener('click', createInbox);
     el.closeInbox.addEventListener('click', closeInbox);
     el.copyLink.addEventListener('click', copyLink);
+    el.openSaveDir.addEventListener('click', function () { openFolder('dir'); });
+    el.themeToggle.addEventListener('click', toggleTheme);
     el.settingsBtn.addEventListener('click', openSettings);
     el.settingsClose.addEventListener('click', closeSettings);
     el.historyBtn.addEventListener('click', openHistory);
@@ -105,8 +175,9 @@
     Array.prototype.forEach.call(document.getElementsByName('savePref'), function (r) {
       r.addEventListener('change', onPrefChange);
     });
-    document.addEventListener('qrdrop:langchange', renderStatus);
+    document.addEventListener('qrdrop:langchange', rerenderOnLang);
 
+    loadTheme();
     restoreSession();
   }
 
@@ -153,9 +224,11 @@
     el.qrImage.src = data.qr_url;
     el.qrImage.hidden = false;
     el.qrPlaceholder.hidden = true;
+    el.qrTitle.hidden = false;
     el.qrCaption.hidden = false;
     el.qrMeta.hidden = false;
     el.closeInbox.hidden = false;
+    el.openSaveDir.hidden = false;
     el.copyLink.disabled = false;
 
     var dir = data.save_dir || '';
@@ -206,6 +279,7 @@
       el.fileList.appendChild(buildRow(state.files[id], false));
     });
     updateEmptyState();
+    updateFileCount();
   }
 
   function addFile(meta) {
@@ -216,11 +290,17 @@
     state.order.push(meta.id);
     el.fileList.appendChild(buildRow(meta, true));
     updateEmptyState();
+    updateFileCount();
   }
 
   function buildRow(meta, isNew) {
     var row = document.createElement('li');
     row.className = 'file-row' + (isNew ? ' is-new' : '');
+
+    var badge = fileBadge(meta.name);
+    var b = document.createElement('span');
+    b.className = 'file-badge ' + badge[1];
+    b.textContent = badge[0];
 
     var name = document.createElement('a');
     name.className = 'file-name';
@@ -250,6 +330,7 @@
       openFolder(meta.id);
     });
 
+    row.appendChild(b);
     row.appendChild(name);
     row.appendChild(size);
     row.appendChild(download);
@@ -312,6 +393,11 @@
   function tick() {
     var remaining = Math.max(0, state.expiresAt - Date.now());
     el.countdown.textContent = formatClock(remaining);
+    if (remaining <= 60000) {
+      el.countdown.classList.add('urgent');
+    } else {
+      el.countdown.classList.remove('urgent');
+    }
     if (remaining <= 0) {
       markEnded('expired');
     }
@@ -476,6 +562,7 @@
     state.status = status;
     localStorage.removeItem(SESSION_KEY);
     el.copyLink.disabled = true;
+    el.openSaveDir.hidden = true;
     renderStatus();
   }
 
@@ -596,6 +683,7 @@
   }
 
   function renderHistory(sessions) {
+    state.historySessions = sessions.slice();
     el.historyList.textContent = '';
     if (!sessions.length) {
       el.historyEmpty.hidden = false;
@@ -643,6 +731,12 @@
       sess.files.forEach(function (f) {
         var fri = document.createElement('li');
         fri.className = 'file-row';
+
+        var bBadge = fileBadge(f.name);
+        var bEl = document.createElement('span');
+        bEl.className = 'file-badge ' + bBadge[1];
+        bEl.textContent = bBadge[0];
+        fri.appendChild(bEl);
 
         var name = document.createElement('a');
         name.className = 'file-name';

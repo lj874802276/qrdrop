@@ -14,6 +14,7 @@
   <div class="topbar-actions">
     <button id="historyBtn" class="btn btn-ghost btn-sm" type="button" data-i18n="history">历史记录</button>
     <button id="settingsBtn" class="btn btn-ghost btn-sm" type="button" data-i18n="settings">设置</button>
+    <button id="themeToggle" class="btn btn-ghost btn-sm" type="button">深色</button>
     <button id="langToggle" class="btn btn-ghost btn-sm" type="button">中 | En</button>
   </div>
 </header>
@@ -32,11 +33,12 @@
 
   <div class="grid">
     <section class="card qr-panel">
+      <h3 id="qrTitle" class="qr-title" data-i18n="qrTitle" hidden>扫码上传文件</h3>
       <div class="qr-frame">
         <img id="qrImage" class="qr-image" width="240" height="240" alt="QR code" hidden>
         <p id="qrPlaceholder" class="qr-placeholder" data-i18n="qrHint">点击「新建收件箱」生成二维码</p>
       </div>
-      <p id="qrCaption" class="qr-caption" data-i18n="qrCaption" hidden>请讲师扫码上传</p>
+      <p id="qrCaption" class="qr-subtitle" data-i18n="qrCaption" hidden>请用手机扫一扫上传文件</p>
       <p id="qrMeta" class="qr-meta" hidden>
         <span data-i18n="sessionTTL">会话有效期</span>
         <span id="countdown" class="mono">--:--</span>
@@ -46,13 +48,28 @@
     </section>
 
     <section class="card files-panel">
-      <h2 class="card-title" data-i18n="receivedFiles">已接收文件</h2>
+      <h2 class="card-title">
+        <span data-i18n="receivedFiles">已接收文件</span>
+        <span id="fileCount" class="count-badge">0</span>
+      </h2>
       <ul id="fileList" class="file-list"></ul>
-      <p id="fileEmpty" class="file-empty" data-i18n="noFiles">暂无文件</p>
-      <p class="save-hint">
-        <span data-i18n="saveTo">自动保存到</span>
-        <span id="saveDir" class="mono save-dir">—</span>
+      <p id="fileEmpty" class="file-empty">
+        <svg class="empty-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        <span data-i18n="waitingFiles">等待对方上传…</span>
       </p>
+      <div class="save-hint">
+        <span class="save-hint-label">
+          <span data-i18n="saveTo">自动保存到</span>
+          <span id="saveDir" class="mono save-dir">—</span>
+        </span>
+        <button id="openSaveDir" class="btn btn-ghost btn-sm icon-btn" type="button" data-i18n-title="openSaveDir" title="打开保存位置" hidden>
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M1.5 4.5a1 1 0 0 1 1-1h3L6.7 4.9h5.8a1 1 0 0 1 1 1V11a1 1 0 0 1-1 1H2.5a1 1 0 0 1-1-1V4.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
     </section>
   </div>
 </main>

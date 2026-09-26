@@ -12,7 +12,10 @@
       statusClosed: '收件箱已关闭',
       statusExpired: '会话已过期',
       qrHint: '点击「新建收件箱」生成二维码',
-      qrCaption: '请讲师扫码上传',
+      qrTitle: '扫码上传文件',
+      qrCaption: '请用手机扫一扫上传文件',
+      waitingFiles: '等待对方上传…',
+      openSaveDir: '打开保存位置',
       sessionTTL: '会话有效期',
       copyLink: '复制链接',
       copied: '已复制链接',
@@ -66,7 +69,9 @@
       histFiles: '个文件',
       histLocation: '保存位置',
       fileRetained: '已接收的文件已保留在本地',
-      saveBtn: '保存'
+      saveBtn: '保存',
+      themeDark: '深色',
+      themeLight: '浅色'
     },
     en: {
       brandSub: 'Scan & deliver',
@@ -77,7 +82,10 @@
       statusClosed: 'Inbox closed',
       statusExpired: 'Session expired',
       qrHint: 'Click "New inbox" to generate a QR code',
-      qrCaption: 'Ask the sender to scan',
+      qrTitle: 'Scan & upload',
+      qrCaption: 'Scan with your phone to upload',
+      waitingFiles: 'Waiting for uploads…',
+      openSaveDir: 'Open save location',
       sessionTTL: 'Expires in',
       copyLink: 'Copy link',
       copied: 'Link copied',
@@ -131,7 +139,9 @@
       histFiles: 'files',
       histLocation: 'Location',
       fileRetained: 'Received files are kept on disk',
-      saveBtn: 'Save'
+      saveBtn: 'Save',
+      themeDark: 'Dark',
+      themeLight: 'Light'
     }
   };
 
@@ -204,9 +214,9 @@
   };
 
   document.addEventListener('DOMContentLoaded', function () {
-    var toggle = document.getElementById('langToggle');
-    if (toggle) {
-      toggle.addEventListener('click', toggle);
+    var langBtn = document.getElementById('langToggle');
+    if (langBtn) {
+      langBtn.addEventListener('click', toggle);
     }
     apply();
   });
