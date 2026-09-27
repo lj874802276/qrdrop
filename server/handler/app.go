@@ -70,11 +70,11 @@ func (a *App) view(r *http.Request, sess *model.Session) sessionView {
 	if files == nil {
 		files = []model.FileMeta{}
 	}
-	// The save location is the snapshotted preference resolved to its real path,
-	// scoped to this inbox's token directory (files live at saveDir/{token}/...).
-	saveLoc := filepath.Join(a.Cfg.DataDir, "received", sess.Token)
+	// The save location is the snapshotted preference resolved to its real path.
+	// Files land directly here — no per-session subfolder.
+	saveLoc := filepath.Join(a.Cfg.DataDir, "received")
 	if resolved, err := a.Cfg.ResolveSaveDir(sess.SaveDir); err == nil {
-		saveLoc = filepath.Join(resolved, sess.Token)
+		saveLoc = resolved
 	}
 
 	return sessionView{

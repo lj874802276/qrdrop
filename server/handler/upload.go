@@ -68,7 +68,11 @@ func (a *App) UploadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dir := filepath.Join(saveRoot, token)
+	// Files are written straight into the save location — no per-session
+	// subfolder, so the desktop (or chosen dir) stays clean. Name clashes
+	// within a session and across sessions are resolved atomically by
+	// createUnique (name, name-1, …).
+	dir := saveRoot
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		writeError(w, http.StatusInternalServerError, "cannot prepare storage")
 		return

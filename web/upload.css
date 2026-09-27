@@ -204,6 +204,20 @@ body {
   background: var(--danger);
 }
 
+.q-row.is-uploading .q-fill {
+  background-image: linear-gradient(
+    45deg, rgba(255, 255, 255, 0.28) 25%, transparent 25%,
+    transparent 50%, rgba(255, 255, 255, 0.28) 50%, rgba(255, 255, 255, 0.28) 75%,
+    transparent 75%, transparent);
+  background-size: 1rem 1rem;
+  animation: qStripe 0.9s linear infinite;
+}
+
+@keyframes qStripe {
+  from { background-position: 0 0; }
+  to { background-position: 1rem 0; }
+}
+
 .q-meta {
   display: flex;
   align-items: center;
@@ -235,6 +249,58 @@ body {
   color: #fff;
   font-size: 12px;
   line-height: 1.5;
+}
+
+/* ---------- multi-select hint ---------- */
+
+.drop-hint {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--faint);
+}
+
+/* ---------- overall progress ---------- */
+
+.overall {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fafbfc;
+}
+
+.overall-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.overall-pct {
+  font-family: var(--mono, inherit);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.overall-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.overall-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.2s ease;
 }
 
 /* ---------- footer + notice ---------- */

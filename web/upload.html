@@ -25,10 +25,19 @@
             stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <p class="drop-text" data-i18n="dropHint">点击或拖拽选择文件</p>
+    <p class="drop-hint" data-i18n="multiSelectHint">可一次选择多个文件，自动并行上传</p>
     <input id="fileInput" type="file" multiple hidden>
   </div>
 
   <button id="uploadBtn" class="m-btn" type="button" disabled data-i18n="upload">上传</button>
+
+  <div class="overall" id="overall" hidden>
+    <div class="overall-head">
+      <span class="overall-text" id="overallText"></span>
+      <span class="overall-pct" id="overallPct">0%</span>
+    </div>
+    <div class="overall-track"><span class="overall-fill" id="overallFill"></span></div>
+  </div>
 
   <ul id="queue" class="queue"></ul>
 

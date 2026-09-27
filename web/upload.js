@@ -63,6 +63,10 @@
     el.queue = $('queue');
     el.foot = $('footNote');
     el.notice = $('notice');
+    el.overall = $('overall');
+    el.overallText = $('overallText');
+    el.overallPct = $('overallPct');
+    el.overallFill = $('overallFill');
 
     state.token = new URLSearchParams(window.location.search).get('session') || '';
 
@@ -81,7 +85,7 @@
       addFiles(el.fileInput.files);
       el.fileInput.value = '';
     });
-    el.uploadBtn.addEventListener('click', runQueue);
+    el.uploadBtn.addEventListener('click', onUploadClick);
     document.addEventListener('qrdrop:langchange', renderDynamic);
     bindDragAndDrop();
 
@@ -161,6 +165,11 @@
 
     renderQueue();
     updateButton();
+    renderOverall();
+    if (files.length > 1) {
+      tip(I18N.t('addedFiles', { n: files.length }));
+    }
+    runQueue();
   }
 
   function validate(file) {
@@ -183,6 +192,7 @@
       el.queue.appendChild(buildRow(item));
       updateItem(item);
     });
+    renderOverall();
   }
 
   function buildRow(item) {
@@ -248,6 +258,7 @@
 
     item.el.classList.toggle('is-done', item.status === 'done');
     item.el.classList.toggle('is-error', item.status === 'error');
+    item.el.classList.toggle('is-uploading', item.status === 'uploading');
 
     var percent = item.status === 'done' ? 100 : item.progress;
     item.elFill.style.width = percent + '%';
@@ -281,48 +292,156 @@
   }
 
   function updateButton() {
+    if (state.status !== 'ready') {
+      el.uploadBtn.disabled = true;
+      el.uploadBtn.textContent = I18N.t('upload');
+      return;
+    }
     var hasReady = state.queue.some(function (item) {
       return item.status === 'ready';
     });
-    el.uploadBtn.disabled = state.status !== 'ready' || state.uploading || !hasReady;
+    var hasError = state.queue.some(function (item) {
+      return item.status === 'error';
+    });
+    if (state.uploading) {
+      el.uploadBtn.disabled = true;
+      el.uploadBtn.textContent = I18N.t('uploadingBtn');
+    } else if (hasReady) {
+      el.uploadBtn.disabled = false;
+      el.uploadBtn.textContent = I18N.t('upload');
+    } else if (hasError) {
+      el.uploadBtn.disabled = false;
+      el.uploadBtn.textContent = I18N.t('retryFailed');
+    } else {
+      el.uploadBtn.disabled = true;
+      el.uploadBtn.textContent = I18N.t('upload');
+    }
+  }
+
+  // Byte-weighted overall progress: done files count full size, in-flight files
+  // count their current percentage. Hidden unless the inbox is live.
+  function renderOverall() {
+    if (state.status !== 'ready') {
+      el.overall.hidden = true;
+      return;
+    }
+    var total = state.queue.length;
+    if (!total) {
+      el.overall.hidden = true;
+      return;
+    }
+    el.overall.hidden = false;
+
+    var done = 0;
+    var totalBytes = 0;
+    var doneBytes = 0;
+    state.queue.forEach(function (it) {
+      if (it.status === 'done') {
+        done += 1;
+      }
+      var size = it.size || 0;
+      totalBytes += size;
+      if (it.status === 'done') {
+        doneBytes += size;
+      } else if (it.status === 'uploading') {
+        doneBytes += Math.round(size * (it.progress / 100));
+      }
+    });
+
+    var pct = totalBytes > 0
+      ? Math.min(100, Math.round((doneBytes / totalBytes) * 100))
+      : (done === total ? 100 : 0);
+
+    el.overallText.textContent = I18N.t('overallProgress', { done: done, total: total });
+    el.overallPct.textContent = pct + '%';
+    el.overallFill.style.width = pct + '%';
+  }
+
+  // Lightweight transient hint shown in the footer area (e.g. "N files added").
+  var tipTimer = null;
+  function tip(message) {
+    el.foot.textContent = message;
+    if (tipTimer) {
+      clearTimeout(tipTimer);
+    }
+    tipTimer = window.setTimeout(renderFoot, 2600);
   }
 
   // ---------- upload ----------
 
-  function runQueue() {
-    if (state.uploading || state.status !== 'ready') {
+  // Clicking the button either starts a fresh upload or, when only failed items
+  // remain, flips every error back to ready and retries them all.
+  function onUploadClick() {
+    if (state.status !== 'ready') {
       return;
     }
+    if (!state.queue.some(function (it) { return it.status === 'ready'; })) {
+      state.queue.forEach(function (it) {
+        if (it.status === 'error') {
+          it.status = 'ready';
+          it.message = '';
+          updateItem(it);
+        }
+      });
+    }
+    runQueue();
+  }
 
-    var pending = state.queue.filter(function (item) {
-      return item.status === 'ready';
-    });
-    if (!pending.length) {
+  // Concurrent pool: up to POOL uploads in flight at once. Workers pull the next
+  // ready item dynamically, so files added mid-flight are picked up automatically.
+  function runQueue() {
+    if (state.status !== 'ready' || state.uploading) {
+      return;
+    }
+    if (!state.queue.some(function (it) { return it.status === 'ready'; })) {
       return;
     }
 
     state.uploading = true;
     updateButton();
 
-    var chain = Promise.resolve();
-    pending.forEach(function (item) {
-      chain = chain.then(function () {
-        if (state.status !== 'ready') {
-          return null;
+    var POOL = 3;
+    var active = 0;
+
+    function pickNext() {
+      for (var i = 0; i < state.queue.length; i++) {
+        if (state.queue[i].status === 'ready') {
+          return state.queue[i];
         }
+      }
+      return null;
+    }
+
+    function pump() {
+      while (active < POOL) {
+        var item = pickNext();
+        if (!item) {
+          break;
+        }
+        active += 1;
         item.status = 'uploading';
         item.progress = 0;
         updateItem(item);
-        return uploadOne(item);
-      });
-    });
+        renderOverall();
+        uploadOne(item).then(onDone, onDone);
+      }
+    }
 
-    chain.then(function () {
-      state.uploading = false;
-      updateItemDoneStates();
-      updateButton();
-      renderFoot();
-    });
+    function onDone() {
+      active -= 1;
+      renderOverall();
+      if (pickNext()) {
+        pump();
+      } else if (active === 0) {
+        state.uploading = false;
+        updateItemDoneStates();
+        updateButton();
+        renderFoot();
+        renderOverall();
+      }
+    }
+
+    pump();
   }
 
   function uploadOne(item) {
@@ -337,6 +456,7 @@
         if (event.lengthComputable && event.total > 0) {
           item.progress = Math.round((event.loaded / event.total) * 100);
           updateItem(item);
+          renderOverall();
         }
       };
 
@@ -428,6 +548,7 @@
     el.subtitle.hidden = true;
     showNotice(I18N.t('sessionEnded'));
     renderFoot(0);
+    el.overall.hidden = true;
   }
 
   function markInvalid(message) {
@@ -437,6 +558,7 @@
     el.subtitle.hidden = true;
     showNotice(message || I18N.t('sessionInvalid'));
     renderFoot(0);
+    el.overall.hidden = true;
   }
 
   function showNotice(message) {
@@ -455,6 +577,7 @@
     }
     renderFoot();
     updateItemDoneStates();
+    renderOverall();
   }
 
   function renderFoot(remaining) {
